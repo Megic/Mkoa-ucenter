@@ -1,0 +1,39 @@
+<div class="f-cb f-mb10"><h3 class="list-title">memberOpen数据</h3> <span class="f-fr"><a href="#!/?ucenter/admin/memberOpen/addItem" class="f-btn f-btn-success">增加数据</a></span></div>
+<div class="mkoa-box f-p10"  ms-controller="memberOpen-list">
+    <mkoa:pager  url="ucenter/admin/memberOpen/findAll" searchurl="ucenter/admin/memberOpen/search" >
+        <div slot="$top" id="search">
+            <select ms-duplex="searchKey" class="f-fl" >
+                <option value="id">ID</option>
+                <option value="openid">第三方用户标识</option><option value="mid">用户标记</option><option value="type">第三方类型</option>
+            </select>
+            <input type="text" ms-duplex="searchValue" class="f-fl f-ml5"/>
+            <button ms-click="search" class="f-btn f-btn-success f-ml10" >搜索</button>
+            <button ms-if="searchOpen" ms-click="closeSearch" class="f-btn">清空搜索</button>
+        </div>
+        <table slot="$list" class="mkoa-table">
+            <thead>
+            <tr><th width="30">ID</th><th>第三方用户标识</th><th>用户标记</th><th>第三方类型</th><th width="155">创建时间</th><th width="100">操作</th></tr>
+            </thead>
+            <tbody>
+            <tr ms-repeat="listData"><td>{{el.id}}</td><td>{{el.openid}}</td><td>{{el.mid}}</td><td>{{el.type}}</td><td>{{el.createdAt|date("yyyy-MM-dd HH:mm:ss")}}</td>
+           <td><a ms-attr-href="'#!/?ucenter/admin/memberOpen/addItem?id='+el.id"  class="f-btn f-btn-sm">编辑</a> <button  ms-click="remove($remove,el.id)" class="f-btn f-btn-sm">删除</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </mkoa:pager>
+</div>
+<script>
+    require(["mkoaAjax/mkoaAjax","mkoaPagerFull/mkoaPagerFull"], function ($a){
+       avalon.define({
+            $id:'memberOpen-list',
+            remove:function($remove,id){
+                $a.getJSON(app.$host +'ucenter/admin/memberOpen/delete',{id:id},function(data){//删除数据
+                    if(!data.error){
+                        $remove();
+                    }
+                });
+            }
+        });
+        avalon.scan();
+    });
+</script>

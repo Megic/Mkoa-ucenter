@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mkoa</title>
+    <link href="../css/base.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script echarts="../lib/IE/html5shiv.js"></script>
+    <script echarts="../lib/IE/json3.min.js"></script>
+    <![endif]-->
+    <script src="../lib/avalon.js"></script>
+    <script src="../lib/app.js"></script>
+    <style>
+
+        #login{
+            position: absolute;
+            top:45%;
+            margin-top: -160px;
+            z-index: 9;
+            width: 320px;
+            padding: 10px;
+            left: 50%;
+            margin-left: -160px;
+        }
+        #login-bd{
+            background-color: #fff; border-radius: 5px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body ms-controller="app">
+<div id="login" ms-controller="register">
+    <form action="auth/login" ms-submit="submit" method="post">
+        <div class="f-tac f-p10"><h2>用户注册</h2></div>
+        <div id="login-bd">
+            <div><input type="text"  ms-duplex="form.name" placeholder="昵称"/></div>
+            <div class="f-mt10"><input type="text"  ms-duplex="form.phone" placeholder="手机号码"/></div>
+            <div class="f-mt10"><input type="password" ms-duplex="form.password" placeholder="登录密码" /></div>
+            <button type="submit" class="f-btn f-btn-primary f-btn-block f-mt20  ">提交</button>
+            <a href="login" class="f-btn f-btn-block f-mt20  ">返回登录</a>
+        </div>
+    </form>
+</div>
+<script>
+    require(["mkoaMsg/mkoaMsg","mkoaAjax/mkoaAjax","KoaFunctions"], function ($msg,$a,$f) {
+        var vm=avalon.define({
+            $id:'register',
+            form:{phone:'',name:'',password:''},
+            submit:function(e){
+                e.preventDefault();
+//                $msg.error('暂未开放注册');
+                $msg.loading();
+                $a.post('auth/register',vm.form.$model,function(data){//获取列表数据
+                    $msg.closeLoading();
+                    $f.preError(data,function(data){
+                        $msg.success('注册成功!');
+                        setTimeout(function(){
+                            location.href=app.$host+'';
+                        },500)
+                    });
+                });
+            }
+        });
+        avalon.scan();
+    });
+
+</script>
+</body>
+</html>

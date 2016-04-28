@@ -1,0 +1,1 @@
+INSERT INTO "public"."[$prefix]config" ("name","key","description","content","createdAt","updatedAt") VALUES ( '用户设置', 'member', '是否开启注册等相关配置', '[{"name":"是否开启注册","key":"openReg","type":"3","value":"1","content":"是|1,否|0"}]','2016-04-15 17:22:48.432+08', '2016-04-15 17:23:30.441+08');

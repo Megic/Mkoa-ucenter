@@ -1,0 +1,1 @@
+{"name":"用户模块","version":"0.0.1","author":"Megic","description":"建议用户模块，提供简单用户注册登录功能","type":1,"dependencies":["setting"],"folder":"ucenter","installFile":"install.sql","uninstallFile":"uninstall.sql"}
