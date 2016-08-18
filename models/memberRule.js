@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '状态'
                       }}, {
-        tableName:'mkoa_memberRule',
+        tableName:$C.prefix+'memberRule',
         comment: '权限规则表',
         timestamps:true,
         indexes:[],

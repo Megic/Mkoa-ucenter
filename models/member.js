@@ -44,7 +44,14 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '余额'
                       },
-                group: {
+                headimgurl:{
+                    type: DataTypes.STRING,
+                    allowNull:true,
+                    defaultValue:'',
+                    unique:false,
+                    comment: '用户头像地址'
+                },
+                groupId: {
                         type: DataTypes.INTEGER,
                         allowNull:false,
                         defaultValue:'0',
@@ -58,7 +65,7 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '状态'
                       }}, {
-        tableName:'mkoa_member',
+        tableName:$C.prefix+'member',
         comment: '用户表',
         timestamps:true,
         indexes:[],

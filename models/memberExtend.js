@@ -3,21 +3,21 @@
 */
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('memberExtend',{
-                mid: {
+                memberId: {
                         type: DataTypes.INTEGER,
                         allowNull:false,
                         defaultValue:'0',
                         unique:false,
                         comment: '用户ID'
                       },
-                json_data: {
+                extend: {
                         type: DataTypes.JSON,
                         allowNull:false,
                         defaultValue:'0',
                         unique:false,
                         comment: '用户扩展信息'
                       }}, {
-        tableName:'mkoa_memberExtend',
+        tableName:$C.prefix+'memberExtend',
         comment: '用户资料扩展表',
         timestamps:true,
         indexes:[],

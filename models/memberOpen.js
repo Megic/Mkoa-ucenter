@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '第三方用户标识'
                       },
-                mid: {
+                memberId: {
                         type: DataTypes.INTEGER,
                         allowNull:false,
                         defaultValue:'0',
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '第三方类型'
                       }}, {
-        tableName:'mkoa_memberOpen',
+        tableName:$C.prefix+'memberOpen',
         comment: ' 第三方绑定数据表',
         timestamps:true,
         indexes:[],

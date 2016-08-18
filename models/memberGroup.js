@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '状态'
                       }}, {
-        tableName:'mkoa_memberGroup',
+        tableName:$C.prefix+'memberGroup',
         comment: '用户组',
         timestamps:true,
         indexes:[],
