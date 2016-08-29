@@ -4,7 +4,8 @@
 module.exports = function ($this) {
     var main = {};
     main['_init'] = function *() {//先执行的公共函数
-        //console.log(this.langs);
+        //console.log($this['req'].user);
+        // console.log($this.user,$this['req'].user);
     };
     main['_after'] = function *() {//后行的公共函数
         //console.log('公共头部');
@@ -14,11 +15,11 @@ module.exports = function ($this) {
     main['captcha']=function *(){//图片验证码
         var num=parseInt(Math.random()*9000+1000);
         var p = new captchapng(80,30,num); // width,height,numeric captcha
-        p.color(86, 172, 232);  // First color: background (red, green, blue, alpha)
+        p.color(86, 172, 232);  // First color: background (red, green, blue, alpha) //别急演示
         p.color(255, 255, 255, 255); // Second color: paint (red, green, blue, alpha)
         var img = p.getBase64();
         var imgbase64 = new Buffer(img,'base64');
-        $this.session.ucenter_captcha = num;
+        $this.session.ucenter_captcha = num;//记录session
         $this.type = 'image/png';
         $this.body = imgbase64;
     };//****************************
@@ -51,12 +52,12 @@ module.exports = function ($this) {
         if($this.POST['phone']||$this.POST['email']||$this.POST['username']) {
             if (check.status) {/*通过验证*/
                 var res, resData;
+                var orlist=[];
+                if($this.POST['phone'])orlist.push({phone: $this.POST['phone']});
+                if($this.POST['email'])orlist.push({email: $this.POST['email']});
+                if($this.POST['username'])orlist.push({username: $this.POST['username']});
                 var user = yield $D('member').findOne({
-                    where: {
-                        $or: [
-                            {phone: $this.POST['phone']}, {email: $this.POST['email']}, {username: $this.POST['username']}
-                        ]
-                    }
+                    where: {$or:orlist}
                 });
                 if (!user) {
                     $this.POST['password'] = $F.encode.md5($this.POST['password']);

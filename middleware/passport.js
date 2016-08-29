@@ -6,7 +6,7 @@ module.exports = function(app){
        $D('member').findOne({where:{
             password:$F.encode.md5(password),
             $or: [
-                {phone:username},{email:username},{name:username}
+                {phone:username},{email:username},{username:username}
             ]
         }}).then(function (user) {
             done(null,user);
