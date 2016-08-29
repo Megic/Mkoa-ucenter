@@ -9,15 +9,31 @@ module.exports = function ($this) {
     main['_after'] = function *() {//后行的公共函数
         //console.log('公共头部');
     };
+    //**************************** 简易png验证码
+    var captchapng = require('captchapng');
+    main['captcha']=function *(){//图片验证码
+        var num=parseInt(Math.random()*9000+1000);
+        var p = new captchapng(80,30,num); // width,height,numeric captcha
+        p.color(86, 172, 232);  // First color: background (red, green, blue, alpha)
+        p.color(255, 255, 255, 255); // Second color: paint (red, green, blue, alpha)
+        var img = p.getBase64();
+        var imgbase64 = new Buffer(img,'base64');
+        $this.session.ucenter_captcha = num;
+        $this.type = 'image/png';
+        $this.body = imgbase64;
+    };//****************************
     //****************************
     main['checkLogin']=function *(){//判断用户是否已登录
-        if (this.isAuthenticated()){
+        if ($this.isAuthenticated()){
             $this.success(this.req.user); //已经登录
         }else{
             $this.error(401);
         }
     };//****************************
     main['register'] = function *() {
+        //验证码检测
+        if(parseInt($this.POST['captcha'])!=$this.session.ucenter_captcha){$this.error($this.langs['captchaError']);return;}
+
         $this.POST['status']=1;
         $this.POST['groupId']=1;//默认用户组
         /*验证规则*/
@@ -46,7 +62,7 @@ module.exports = function ($this) {
                     $this.POST['password'] = $F.encode.md5($this.POST['password']);
                     res = yield $D('member').build($this.POST).save();
                     yield $D('memberExtend').build({//填写用户扩展信息
-                        mid:res.id,json_data:{}}
+                        memberId:res.id,extend:{}}
                     ).save();
                     resData = res;
                     yield $this.logIn(resData);
@@ -64,10 +80,12 @@ module.exports = function ($this) {
     };
     //****************************
     main['login']=function *(){//用户登录
+        //验证码检测
+        if(parseInt($this.POST['captcha'])!=$this.session.ucenter_captcha){$this.error($this.langs['captchaError']);return;}
+
         if ($this.isAuthenticated()){
             $this.error($this.langs['hasLogin']);//已经登录
         }else{
-
             if($this.POST['username']&&$this.POST['password']) {
                 yield $M.passport.authenticate('local', function*(err, user) {
                     if (err) throw err;
@@ -85,8 +103,8 @@ module.exports = function ($this) {
 
     };//***************************************************
     main['lgout']=function *(){//退出登录
-        this.logout();
-        $this.success();
+        $this.logout();
+        $this.error(401);//退出成功，返回401
     };//***************************************************
 
     return main;

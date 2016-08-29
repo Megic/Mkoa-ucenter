@@ -5,9 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MKoa</title>
-    <link href="../css/base.min.css" rel="stylesheet">
-    <script src="../lib/avalon.js"></script>
-    <script src="../lib/app.js"></script>
     <style>
 
         #login{
@@ -29,50 +26,23 @@
 <body ms-controller="app">
 <div id="particles-js"></div>
 <div id="login" ms-controller="login">
-<form action="auth/login" ms-submit="submit" method="post">
+<form action="auth/login" method="post">
     <div class="f-tac f-p10"><h2>Mkoa Ucenter</h2></div>
     <div id="login-bd">
-        <div  ms-if="!isLogin">
-    <div><input type="text"  ms-duplex="form.username" placeholder="用户名/手机号码/邮箱"/></div>
-    <div class="f-mt10"><input type="password" ms-duplex="form.password" placeholder="登录密码" /></div>
-    <button type="submit" class="f-btn f-btn-primary f-btn-block f-mt20  ">登录</button>
+    <div><input type="text"  name="username" placeholder="用户名/手机号码/邮箱"/></div>
+    <div class="f-mt10"><input type="password" name="password" placeholder="登录密码" /></div>
+        <input type="text" name="captcha"  placeholder="验证码">
+        <img src="auth/captcha?" title="点击刷新验证码" onclick="this.src = this.src + Math.random();"/>
+        <br>
+    <button type="submit" class="f-btn f-btn-primary f-btn-block f-mt20">登录</button>
         <a href="register" class="f-btn f-btn-block f-mt20">注册</a>
-        </div>
-        <button ms-if="isLogin" type="button" ms-click="lgout" class="f-btn  f-btn-block f-mt20  ">退出登录</button>
+
+        <br> <br>
+        <a href="auth/checkLogin">检查登录状态</a>&nbsp;<a href="auth/lgout">退出登录</a>
     </div>
 </form>
 
 </div>
-<script>
-    require(["mkoaMsg/mkoaMsg","mkoaAjax/mkoaAjax","KoaFunctions"], function ($msg,$a,$f) {
 
-    var vm=avalon.define({
-        $id:'login',
-        isLogin:0,
-        lgout:$f.lgout,
-        form:{username:'',password:''},
-        submit:function(e){
-            e.preventDefault();
-            $msg.loading();
-            $a.post('auth/login',vm.form.$model,function(data){//获取列表数据
-                $msg.closeLoading();
-                $f.preError(data,function(data){
-                    $msg.success('登录成功');
-                    setTimeout(function(){
-                        location.href=app.$host+'main.html';
-                    },500)
-                });
-            });
-        }
-    });
-        $a.post('auth/checkLogin',{},function(data){//获取列表数据
-            $msg.closeLoading();
-            if(!data.error) vm.isLogin=1;
-            avalon.scan();
-        });
-
-    });
-
-</script>
 </body>
 </html>

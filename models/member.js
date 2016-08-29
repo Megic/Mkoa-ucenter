@@ -44,13 +44,12 @@ module.exports = function(sequelize, DataTypes) {
                         unique:false,
                         comment: '余额'
                       },
-                headimgurl:{
-                    type: DataTypes.STRING,
-                    allowNull:true,
-                    defaultValue:'',
-                    unique:false,
-                    comment: '用户头像地址'
-                },
+                headimgurl: {
+                        type: DataTypes.STRING,
+                        allowNull:true,
+                        unique:false,
+                        comment: '用户头像'
+                      },
                 groupId: {
                         type: DataTypes.INTEGER,
                         allowNull:false,

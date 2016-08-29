@@ -31,41 +31,22 @@
     </style>
 </head>
 <body ms-controller="app">
-<div id="login" ms-controller="register">
-    <form action="auth/login" ms-submit="submit" method="post">
+<div id="login">
+    <form action="auth/register" ms-submit="submit" method="post">
         <div class="f-tac f-p10"><h2>用户注册</h2></div>
         <div id="login-bd">
-            <div><input type="text"  ms-duplex="form.name" placeholder="昵称"/></div>
-            <div class="f-mt10"><input type="text"  ms-duplex="form.phone" placeholder="手机号码"/></div>
-            <div class="f-mt10"><input type="password" ms-duplex="form.password" placeholder="登录密码" /></div>
+            <div><input type="text"  name="name" placeholder="昵称/姓名"/></div>
+            <div><input type="text"  name="username" placeholder="用户名"/></div>
+            <div><input type="text"  name="email" placeholder="邮箱"/></div>
+            <div class="f-mt10"><input type="text"  name="phone" placeholder="手机号码"/></div>
+            <div class="f-mt10"><input type="password" name="password" placeholder="登录密码" /></div>
+            <input type="text" name="captcha"  placeholder="验证码">
+            <img src="auth/captcha?" title="点击刷新验证码" onclick="this.src = this.src + Math.random();"/>
+            <br><br>
             <button type="submit" class="f-btn f-btn-primary f-btn-block f-mt20  ">提交</button>
             <a href="login" class="f-btn f-btn-block f-mt20  ">返回登录</a>
         </div>
     </form>
 </div>
-<script>
-    require(["mkoaMsg/mkoaMsg","mkoaAjax/mkoaAjax","KoaFunctions"], function ($msg,$a,$f) {
-        var vm=avalon.define({
-            $id:'register',
-            form:{phone:'',name:'',password:''},
-            submit:function(e){
-                e.preventDefault();
-//                $msg.error('暂未开放注册');
-                $msg.loading();
-                $a.post('auth/register',vm.form.$model,function(data){//获取列表数据
-                    $msg.closeLoading();
-                    $f.preError(data,function(data){
-                        $msg.success('注册成功!');
-                        setTimeout(function(){
-                            location.href=app.$host+'';
-                        },500)
-                    });
-                });
-            }
-        });
-        avalon.scan();
-    });
-
-</script>
 </body>
 </html>
